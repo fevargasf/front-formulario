@@ -8,7 +8,7 @@ import { authService } from 'services/authServices'
 
 function* login(payload) {
     try{
-        debugger;
+   
         const response = yield call(authService.login, payload.dataLogin)
 
         const data = {

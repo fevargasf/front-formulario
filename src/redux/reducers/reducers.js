@@ -1,8 +1,9 @@
 import {combineReducers} from "@reduxjs/toolkit"
-import authSlice from './authSlice'
+import { persistReducer } from 'redux-persist'
+import authSlice, {authPersistConfig} from './authSlice'
 
 const slices = combineReducers({
-    auth: authSlice
+    auth: persistReducer(authPersistConfig,authSlice)
 })
 
 export default slices;

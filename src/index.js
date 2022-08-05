@@ -17,44 +17,54 @@ import Maps from "views/admin/Maps";
 import Landing from "views/Landing.js";
 import Profile from "views/Profile.js";
 
-import {Provider} from "react-redux";
-import store from "./redux/store";
+import {Provider, useSelector} from "react-redux";
+import store, { persistor } from "./redux/store";
 import CardTable from "components/Cards/CardTable";
 import Tables from "views/admin/Tables";
+import { dataLogin } from "redux/reducers/authSlice";
+import Login from "components/Footers/Login";
+import { PersistGate } from "redux-persist/lib/integration/react";
 
 axios.defaults.baseURL='http://localhost:8082/';
 //axios.defaults.headers.common['Authorization']= 'ffffff'+ sessionStorage.getItem('token')
 
-ReactDOM.render( <Application /> , document.getElementById('root'));
 
 
-const ProtectedRoute = ({}) => {
-
-}
 
 function Application() {
   return (
     <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
             <Switch>
-              {/* add routes with layouts */}
-             {/*  <Route path="/" exact component={Maps}/> */}
-              {/* <Route path="/" exact component={App}/> */}
-              <Route path="/" exact component={Maps}/>
-
-
-              <Route path="/auth" component={Auth} />
-
-              {/* add routes without layouts */}
-              <Route path="/landing" exact component={Landing} />
-              <Route path="/profile" exact component={Profile} />
+            <Route path="/login" exact component={Login} />
               
-              {/* add redirect for first page */}
-              <Redirect from="*" to="/" />
+              <ProtectedRoute path={"/"}>
+                 <Route path="/" exact component={App}/>
+              </ProtectedRoute>
             </Switch>
           </BrowserRouter>
+      </PersistGate>
     </Provider>
   )
 }
 
-/* const ProtectedRoute  */
+const ProtectedRoute = ({children, ...rest}) => {
+  const authStatus = useSelector(dataLogin);
+  const isLogged = authStatus.isLogged;
+  return (
+    <Route 
+      {...rest} render={({location}) => {
+        return isLogged === true ? (
+          children
+        ) : (
+          <Redirect from="*" to={{pathname: "/login", state:{ from: location}}} />
+        )
+      }}
+    />
+  )
+}
+
+
+
+ReactDOM.render( <Application /> , document.getElementById('root'));

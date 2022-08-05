@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import store from 'redux/store'
 
 const TOKEN_KEY = 'CORAFORM_TOKEN';
 const BASE_URL = "http://localhost:8082/";
@@ -8,7 +9,9 @@ export function setToken(token) {
 }
 
 export function getToken() {
-  return localStorage.getItem(TOKEN_KEY);
+  let auth = JSON.parse(localStorage.getItem('persist:root'));
+  console.log(auth)
+  return localStorage.getItem(auth.token);
 }
 
 export function deleteToken() {
@@ -29,7 +32,10 @@ const axiosInstance = Axios.create({
 })
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = getToken();
+  const dataStorage = store.getState().auth
+  let token =  dataStorage.token;
+  token = token.replace(/['"]+/g, '')
+  console.log(token, "token")
   if (token) {
     config.headers.Authorization = 'Bearer '+ token;
   }

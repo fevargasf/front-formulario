@@ -51,25 +51,6 @@ export default function App() {
 
 
   }, []);
- async function login(Usuario, Password,vinavegador,viip){
-
-  const dataLogin = {
-    Usuario,
-    Password,
-    vinavegador,
-    viip
-  }
-
-    dispatch({type:identifierActions.FETCH_LOGIN, dataLogin})
-
-  
-    /* setError(data.voerror)
-      setUsuario(data.usuario);
-      sessionStorage.setItem("usuario", data.usuario)
-      setToken(data.token);
-      sessionStorage.setItem("token",data.token) */
-  }
-
     function logout() {
       setUsuario(null);
       deleteToken();
@@ -84,46 +65,14 @@ export default function App() {
   return (
     <>
        <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <IndexNavbar  usuario={usuario}  />
-      <Error mensaje={error} esconderError={esconderError} />
-      {usuario ? (
-        <LoginRoutes
-        mostrarError={mostrarError}
-          usuario={usuario}
-          logout={logout}
-        />
-      ) : (
-        <LogoutRoutes
-        login={login}
-        mostrarError={mostrarError}
-        />
-      )}
-       
-      <Footer /> 
+        <IndexNavbar  usuario={usuario}  />
+        <Switch>
+          <Route path="/" component={CardTable}/>
+          <Route path="/admin/maps" componente={Maps}/>
+         </Switch>
+        <Footer /> 
       </ThemeContext.Provider>
     </>
     
-  );
-}
-function LoginRoutes({usuario}) {
-  return (
-    <Switch>
-    <Route path="/" component={CardTable}/>
-    <Route path="/admin/maps" componente={Maps}/>
-
-    </Switch>
-  );
-}
-function LogoutRoutes({ login,mostrarError }) {
-  return (
-    <Switch>
-      <Route
-        path="/"
-        render={props => (
-          <Login {...props} login={login}  mostrarError={mostrarError}  default/>
-        )}
-      />
-    
-    </Switch>
   );
 }

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
 
 const authSlice = createSlice({
     name: "auth",
@@ -34,6 +35,11 @@ export const { successLogin, failureLogin } = authSlice.actions
 
 export const identifierActions = {
     FETCH_LOGIN: 'FETCH_LOGIN'
+}
+
+export const authPersistConfig = {
+    key:'auth',
+    storage: storage,
 }
 
 export const dataLogin = (state) => state.auth

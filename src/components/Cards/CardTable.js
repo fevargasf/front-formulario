@@ -6,6 +6,7 @@ import { setToken, deleteToken,getToken, initAxiosInterceptors } from "Helpers/a
 import { useHistory } from "react-router-dom";
 // components
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
+import { axiosInstance } from "Helpers/auth-helpers";
 
 
 export default function CardTable({ color}) {
@@ -19,7 +20,7 @@ export default function CardTable({ color}) {
     try {
     //  const usuarioF= sessionStorage.getItem('usuario')
     const usuarioF='daniela_bonilla'
-     axios.post(`asignacionesF?viIdUsuario=${usuarioF}`).then(
+    axiosInstance.post(`asignacionesF?viIdUsuario=${usuarioF}`).then(
       (response) => {
         setPosta(response.data);
         console.log(response.data);

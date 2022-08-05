@@ -1,15 +1,33 @@
 import React, { useState,useEffect } from "react";
-import { Link,Redirect  } from "react-router-dom";
+import { Link,Redirect, useHistory  } from "react-router-dom";
 import axios from 'axios'; 
+import { useDispatch } from "react-redux";
+import { identifierActions } from "redux/reducers/authSlice";
 
-export default function Login({login,mostrarError}) {
+export default function Login() {
   const getData = async () => {
     const res = await axios.get('https://geolocation-db.com/json/')
     const viip= res.data.IPv4;
      console.log(viip)
     sessionStorage.setItem('viip',viip);
   } 
+  const history =  useHistory();
+  const dispatch = useDispatch()
 
+  async function login(Usuario, Password,vinavegador,viip){
+
+    const dataLogin = {
+      Usuario,
+      Password,
+      vinavegador,
+      viip
+    }
+  
+      dispatch({type:identifierActions.FETCH_LOGIN, dataLogin})
+      history.push({
+        pathname:'/'
+      })
+    }
 
   var recuIp= sessionStorage.getItem('viip');
   const [user, setuser] = useState({ 
@@ -21,7 +39,7 @@ export default function Login({login,mostrarError}) {
 
     async function handleSubmit (e)  {    
     e.preventDefault();    
-   // debugger;   
+ 
    try{
      await login(user.Usuario,user.Password, user.vinavegador, user.viip);
    }catch (error){
@@ -128,7 +146,7 @@ export default function Login({login,mostrarError}) {
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
                 <a
-                  href="#pablo"
+                
                   onClick={(e) => e.preventDefault()}
                   className="text-blueGray-200"
                 >

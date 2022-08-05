@@ -122,11 +122,13 @@ export default function Maps() {
                 </div>     
               </div>
               <h1 class="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">2. Antecedentes:</h1>
+              <TablaAntecedentes/>
+              <h1 class="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">3. Coordenadas asociadas al trámite ambiental:</h1>
             </form>
           </div>
        
           {/*   <MapExample /> */}
-          <TablaAntecedentes/>
+          
           </div>
         </div>
       </div>
