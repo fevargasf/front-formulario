@@ -27,17 +27,23 @@ const persistConfig = {
    // blackList:['information']
 };
 
+const middleware = [
+    ...getDefaultMiddleware({
+        immutableCheck: false,
+        thunk:false,
+        serializableCheck:{
+            ignoredActions:[FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        }
+    }),
+    sagaMiddleware
+];
+
+
 const persistedReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
     reducer:  persistedReducer,
-    middleware: (getConfigMiddleware) => {
-        return getConfigMiddleware({
-            thunk: false,
-            immutableCheck: false,
-            thunk:false,
-        }).prepend(sagaMiddleware).append(offlineMiddleware);
-    }
+    middleware
 })
   /* enhancers: (defaultEnhancers) => {
         return [offline, ...defaultEnhancers]
