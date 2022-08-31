@@ -1,8 +1,8 @@
 import Axios from 'axios';
 import store from 'redux/store'
 
-const TOKEN_KEY = process.env.TOKEN_KEY;
-const BASE_URL = process.env.API_URL;
+const TOKEN_KEY = process.env.REACT_APP_TOKEN_KEY;
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 export function setToken(token) {
   localStorage.setItem(TOKEN_KEY, token);
@@ -40,6 +40,8 @@ axiosInstance.interceptors.request.use((config) => {
 
   return config;
 })
+
+
 
 axiosInstance.interceptors.response.use(
   function(response) {

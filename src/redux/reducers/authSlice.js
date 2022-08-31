@@ -8,30 +8,42 @@ const authSlice = createSlice({
         viip: null,
         usuario: '',
         isLogged: false,
+        voerror:null,
         error: {
             message:''
         }
     },
     reducers: {
-        successLogin: (state, action) => {
-            state.token = action.payload.token;
-            state.viip = action.payload.viip;
-            state.usuario = action.payload.usuario;
-            state.isLogged = true;
+        successLogin:(state, action)=> {
+            
+                state.token = action.payload.token;
+                state.viip = action.payload.viip;
+                state.usuario = action.payload.usuario;
+                state.isLogged = true;
+                state.voerror = null;
+            
+           
         },
         failureLogin: (state, action) => {
             state.token = null
             state.viip = null
             state.usuario = null
-            state.isLogged = false
+            state.isLogged = false;
+            state.voerror = action.payload.voerror;
+        
         },
-        logout: (state, action) => {
-
+        logout: (state) => {
+            state.token = null
+            state.viip = null
+            state.usuario = null
+            state.isLogged = false
+            state.voerror = null
         }
     }
 })
 
-export const { successLogin, failureLogin } = authSlice.actions
+
+export const { successLogin, failureLogin, logout } = authSlice.actions
 
 export const identifierActions = {
     FETCH_LOGIN: 'FETCH_LOGIN'

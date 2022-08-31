@@ -15,15 +15,15 @@ module.exports = {
       "./public/**/*.js",
       "./public/*.js",
     ],
+    darkMode:  ['class', '[data-mode="dark"]'],
+  
     options: {
       safelist: [],
     },
   },
   
   theme: {
-    colors: {
-      ...colors,
-    },
+    
    
     extend: {
       minHeight: {

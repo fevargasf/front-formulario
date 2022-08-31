@@ -1,10 +1,16 @@
 import React, { useState,useEffect } from "react";
 import { Link,Redirect, useHistory  } from "react-router-dom";
 import axios from 'axios'; 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { identifierActions } from "redux/reducers/authSlice";
+import { dataLogin } from "redux/reducers/authSlice";
+import Swal from 'sweetalert2';
+import Loading from "components/Loading";
 
 export default function Login() {
+  const [error, setError] = useState(null);
+  const carga = useSelector((state) => state.auth.voerror)
+ console.log(carga)
   const getData = async () => {
     const res = await axios.get('https://geolocation-db.com/json/')
     const viip= res.data.IPv4;
@@ -25,7 +31,7 @@ export default function Login() {
   
       dispatch({type:identifierActions.FETCH_LOGIN, dataLogin})
       history.push({
-        pathname:'/'
+        pathname:'/asignaciones',
       })
     }
 
@@ -43,7 +49,7 @@ export default function Login() {
    try{
      await login(user.Usuario,user.Password, user.vinavegador, user.viip);
    }catch (error){
-      
+ 
    }
    
    
@@ -56,16 +62,19 @@ export default function Login() {
     var msie = window.navigator.userAgent.indexOf("MSIE ");
     console.log(msie)
     //setIsIE(msie > 0)
-
+    setError(sessionStorage.getItem('error'))
   }, [])
   const onChange = (e) => {    
     e.persist();    
     setuser({...user, [e.target.name]: e.target.value});    
+   
 
   }
+  
 
   return (
     <>
+   {error && <div className="error">{error}</div>}
       <div className="container mx-auto  px-4  ">
         <div className="flex content-center items-center justify-center ">
           <div className="top-50 mt-20 w-full lg:w-4/12 px-4">
@@ -134,6 +143,7 @@ export default function Login() {
                   </div>
 
                   <div className="text-center mt-6">
+             
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="submit" value="Submit">
@@ -163,5 +173,6 @@ export default function Login() {
         </div>
       </div>
     </>
-  );
+  )
+ 
 }

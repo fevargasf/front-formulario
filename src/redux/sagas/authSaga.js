@@ -3,21 +3,35 @@ import { failureLogin } from 'redux/reducers/authSlice';
 import { identifierActions } from 'redux/reducers/authSlice'
 import { successLogin } from 'redux/reducers/authSlice'
 import { authService } from 'services/authServices'
+import Swal from 'sweetalert2';
 
 
 
 function* login(payload) {
     try{
    
-        const response = yield call(authService.login, payload.dataLogin)
+        const {data, status, message} = yield call(authService.login, payload.dataLogin)
+        console.log(data)
+        if (data === null) {
+            
+            yield put(failureLogin({message: 'error'}))
+             console.log(data)
+             Swal.fire(message)
 
-        const data = {
-            token: response.token,
-            viip: payload.viip,
-            usuaio: response.usuario
+        } else {
+             const _data = {
+            token: data.token,
+            voerror:data.voerror,
+            viip: data.viip,
+            usuario: data.usuario
         }
             
-        yield put(successLogin(data))
+        yield put(successLogin(_data))
+        
+       // const errorLogin = sessionStorage.setItem('error',_data.voerror)
+        
+        }
+       
 
     }catch(e) {
 
