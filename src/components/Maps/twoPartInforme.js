@@ -4,7 +4,6 @@ import { dataRecord } from "redux/reducers/recordExpSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { identifierActions } from "redux/reducers/recordExpSlice"; 
 import { useLocation } from "react-router";
-import { dataId } from "redux/reducers/asignacionSlice";
 import { identifierSaveRecordActions } from "redux/reducers/saveRecordSlice";
 import { identifierSeeAction } from "redux/reducers/seeRecordSlice";
 import { dataSeeRecord } from "redux/reducers/seeRecordSlice";
@@ -18,7 +17,7 @@ export default function AntecedentTable({color, location, idEtapa}) {
   const user = useSelector((state) => state.auth.usuario)
   const data = useSelector(dataRecord);
   const seeData = useSelector(dataSeeRecord)
-  const sec =useSelector(dataId)
+
   const _location = useLocation();
   const dispatch = useDispatch()
   const [mostrarComponente, setMostrarComponente] = useState(false);
@@ -83,7 +82,7 @@ export default function AntecedentTable({color, location, idEtapa}) {
     return (
       <>
        <hr />
-       <button onClick={(e) => setCerrar(e)}>
+       <button className="Upload__submit" onClick={(e) => setCerrar(e)}>
         {cerarComponente ? `Cerrar` : `Abrir`}
       </button>
         <div 
@@ -186,7 +185,7 @@ export default function AntecedentTable({color, location, idEtapa}) {
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                    <br />
-                  <p>{item.descriptor}-{item.doc_sec}</p>
+                  <p>{item.descriptor}</p>
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   <p>{new Date(item.fecha_notificacion).toLocaleString().split(',')[0]}</p>
@@ -212,9 +211,9 @@ export default function AntecedentTable({color, location, idEtapa}) {
          </div>
           {/* end table */}
        <hr />
-       <button onClick={(e) => setMostrar(e)}>
+       <button className="Upload__submit" onClick={(e) => setMostrar(e)}>
         {/*Aqui solo cambio el texto de mi boton, para el ejemplo */}
-        {mostrarComponente ? `Ocultar` : 'Agregar '}
+        {mostrarComponente ? `Ocultar` : 'Agregar otros Antecedentes '}
         <AddCircleRoundedIcon/>
         </button>
         <div 
@@ -293,7 +292,7 @@ export default function AntecedentTable({color, location, idEtapa}) {
                   <p>{item.descriptor}-{item.doc_sec}</p>
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <button className="hover:text-blueGray-500 text-green-600 px-3 py-4 lg:py-2 flex items-center text-xs  font-bold"
+                  <button className="Upload__submit"
                   onClick={(e)=>handleSave(e,item)}
                   >Agregar</button>
                

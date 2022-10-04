@@ -27,7 +27,7 @@ const persistConfig = {
    // blackList:['information']
 };
 
-const middleware = [
+/* const middleware = [
     ...getDefaultMiddleware({
         immutableCheck: false,
         thunk:false,
@@ -36,16 +36,25 @@ const middleware = [
         }
     }),
     sagaMiddleware
-];
+]; */
 
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
     reducer:  persistedReducer,
-    middleware
+    middleware: (middlewareDefault) => middlewareDefault({thunk: false}).concat(sagaMiddleware),
+  /*   enhancers: (defaultEnhancers) => [offline(offlineConfig ,  effect), ...defaultEnhancers] */
 })
-  /* enhancers: (defaultEnhancers) => {
+
+  /*
+  persist: undefined,
+  const store = configureStore({
+    reducer: reducer,
+    middleware: (middlewareDefault) => middlewareDefault({thunk: false}).concat(sagaMiddleware),
+    enhancers: (defaultEnhancers) => [offline(offlineConfig), ...defaultEnhancers]
+})
+  enhancers: (defaultEnhancers) => {
         return [offline, ...defaultEnhancers]
     } */
 sagaMiddleware.run(saga)

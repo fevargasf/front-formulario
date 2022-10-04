@@ -39,4 +39,4 @@ export const saveRecordPersistConfig ={
 
 export const dataSaveRecord =(state)=>state.saveRecord.data;
 
-export default saveRecordSlice.reducer
+export default saveRecordSlice.reducer;

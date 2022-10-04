@@ -12,7 +12,7 @@ const informationSlice = createSlice({
     },
     reducers:{
         successInformation:(state, action)=>{
-            state.data= action.payload;
+            state.data = action.payload;
             state.error = {
                 message:''
             }

@@ -1,6 +1,6 @@
-import React, { useState,useEffect }  from "react";
+import React, { useState,useEffect,useRef }  from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch, Redirect, matchPath, useHistory } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect, matchPath, useHistory, HashRouter } from "react-router-dom";
 import axios from "axios";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/styles/tailwind.css";
@@ -17,48 +17,34 @@ import { PersistGate } from "redux-persist/lib/integration/react";
 axios.defaults.baseURL='http://localhost:8082/';
 
 function Application() {
-  const [theme, setTheme] = useState(null);
- 
-	useEffect(() => {
-		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-			setTheme('bg-black');
-		} else {
-			setTheme('bg-white');
-		}
-	}, []);
+  const componentToPrint = useRef(null);
 
-	const handleThemeSwitch = () => {
-		setTheme(theme === 'bg-black' ? 'bg-white' : 'bg-black');
-	};
-
-	useEffect(() => {
-		if (theme === 'bg-black') {
-			document.documentElement.classList.add('bg-black');
-		} else {
-			document.documentElement.classList.remove('bg-black');
-		}
-	}, [theme]);
   return (
   
       <>
         
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter>
-            <Switch>      
+        <HashRouter>
+        <Router basename={'/CoraForms'} >
+            <Switch> 
             <IsLogged exact path='/'>
                <Login></Login>
             </IsLogged>
               <ProtectedRoute path={"/asignaciones"}>
                 <Route path="/asignaciones" exact component={App}/>
-                <Route path="/asignaciones/formulario/Seguimiento/:ID" component={Maps}/>
+                <Route path="/asignaciones/formulario/Seguimiento/:ID" componentToPrint={componentToPrint}  component={Maps}/>
                  <Route path="/asignaciones/formulario/Evaluación/:ID" component={Evaluacion}/>
                  <IndexNavbar   />
               </ProtectedRoute>
+           
             </Switch>
-          </BrowserRouter>
+         
+          </Router>
+        </HashRouter>
       </PersistGate>
     </Provider>
+
    </>
   )
 }

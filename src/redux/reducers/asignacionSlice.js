@@ -7,8 +7,7 @@ const asignacionSlice = createSlice({
         data: [],
         error: {
             message:''
-        },
-        
+        }
     },
     reducers: {
         successAsignacion: (state, action) => {
@@ -17,14 +16,12 @@ const asignacionSlice = createSlice({
                 message:''
             }
         }
-        
-    
     }
-})
+});
 
 
 
-export const { successAsignacion } = asignacionSlice.actions
+export const { successAsignacion } = asignacionSlice.actions;
 
 export const identifierActions = {
     FETCH_ALL_ASINGNAMENTS: 'FETCH_ALL_ASINGNAMENTS'
@@ -36,8 +33,6 @@ export const asignacionPersistConfig = {
 }
 
 export const dataAssignament = (state) => state.asignacion.data
-export const dataId = (state)=> state.asignacion.data.map((i)=>{
-   return i.sec
-})
+
 
 export default asignacionSlice.reducer;

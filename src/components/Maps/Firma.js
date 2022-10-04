@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { identifierQueryAction } from 'redux/reducers/querySignSlice';
 import { dataQuerySign } from 'redux/reducers/querySignSlice';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 export default function Upload({ history, mostrarError,idEtapa,color }) {
     const [imagenUrl, setImagenUrl] = useState('');
@@ -14,11 +15,11 @@ export default function Upload({ history, mostrarError,idEtapa,color }) {
     const user = useSelector(dataQuerySign)
     const dispatch = useDispatch()
     
-  console.log(user.data)
+
 
 
     useState(()=>{
-
+    
      dispatch({
         type:identifierQueryAction.FETCH_QUERY_SIGN, payload:idEtapa
       }) 
@@ -78,21 +79,14 @@ export default function Upload({ history, mostrarError,idEtapa,color }) {
         mostrarError(error.response.data);
       }
     }
- 
- 
-    
-    
-   
-  
+
     return (
         <>
         <br />
         <hr />
-
         <div className="flex justify-left">
-      
             <br /><br /><br />
-            <div 
+        <div 
           className={
             " relative flex flex-col min-w-0 break-words w-full py-4 px-3 mx-3 mb-4 mt-20 shadow-lg rounded " +
             (color === "light" ? "bg-white" : "bg-lightBlue-900 text-white")
@@ -101,12 +95,8 @@ export default function Upload({ history, mostrarError,idEtapa,color }) {
           </div>
           <div className="block w-full overflow-x-auto">
             {/* Projects table */}
-      
-             
-     
-                
-          { user.lista_firmas.map((item, index) => (
-                     
+
+          { user.lista_firmas?.map((item, index) => (     
                <ul key={item.sec}>
                   <li className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                   {item.nombre}
@@ -116,6 +106,18 @@ export default function Upload({ history, mostrarError,idEtapa,color }) {
                   </li>
                   <li className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                  <img style={{width:150}} src={`data:image/png;base64,${item.firma}`}  alt="" />
+                 <button  className="inline-flex items-center px-4 py-2 mb-4 mt-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Quitar firma
+                  </button>
+                 </li>
+                 <li className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                  Cantidad Horas: {item.cantidad_horas}
+                 </li>
+                 <li className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                 Cantidad Minutos: {item.cantidad_mins}
                  </li>
                 </ul>
              
@@ -148,20 +150,23 @@ export default function Upload({ history, mostrarError,idEtapa,color }) {
             
             <hr />
         </div>
-        <div className="Upload">
+        <div className="Upload_firma">
           <form onSubmit={handleSubmit}>
-            <div className="Upload__image-section">
+            <div className='flex justify-center'>
+            <div className="Upload__image-section_firma">
               <SeccionSubirImagen
                 imagenUrl={imagenUrl}
                 subiendoImagen={subiendoImagen}
                 handleImagenSeleccionada={handleImagenSeleccionada}
               />
+                 
+            </div>
             </div>
             <br />
             <h1>Duración Informe :</h1>
             <input
               name="Horas"
-              className="Upload__caption"
+              className="Upload__caption_firma"
               required
               maxLength="180"
               placeholder="Horas."
@@ -169,7 +174,7 @@ export default function Upload({ history, mostrarError,idEtapa,color }) {
               onChange={e => setHoras(e.target.value)}
             /><input
               name="Minutos"
-              className="Upload__caption"
+              className="Upload__caption_firma"
               required
               maxLength="180"
               placeholder="Minutos."
@@ -203,7 +208,7 @@ export default function Upload({ history, mostrarError,idEtapa,color }) {
     } else {
       return (
         
-        <label className="Upload__image-label">
+        <label className="Upload__image-label_firma">
          
           <span> <p style={{margin:"0px 10px 0px 55px",fontsize:"25px"}}>&#x1f4e4;</p>Cargar firma</span>
           <input

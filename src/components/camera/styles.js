@@ -19,7 +19,8 @@ export const Wrapper = styled.div`
 
 export const Container = styled.div`
   position: relative;
-  width: 100%;
+  margin:105px 80px 2px -50px;
+  width: 50vh;
   max-width: ${({ maxWidth }) => maxWidth && `${maxWidth}px`};
   max-height: ${({ maxHeight }) => maxHeight && `${maxHeight}px`};
   overflow: hidden;
@@ -76,6 +77,12 @@ export const Button = styled.button`
   min-width: 100px;
   max-width: 250px;
   margin-top: 24px;
-  padding: 12px 24px;
-  background: silver;
+  margin-left:-80px;
+  margin-bottom:24px;
+  padding: 10px 1px;
+  background-color: #3490dc;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 0.25rem;
+
 `;

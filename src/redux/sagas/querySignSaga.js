@@ -10,7 +10,7 @@ function* getQuerySign({payload}){
         const {data, status, message, response} = yield call(querySign.queryOfSign, payload)
 
         yield put(successQuery(data));
-        console.log(data)
+  
     }catch(e){
         console.log(e)
     }

@@ -7,10 +7,7 @@ export const authService = {
         .catch(res => {
             return res.response
         })
-
-        
     }
-
 }
 
 
@@ -22,9 +19,7 @@ export const tableAssignment = {
             return res
         })
     }
-
 }	
-
 
 
 export const tableRecord = {
@@ -46,9 +41,6 @@ export const tableInformation= {
             return res.response
         })
     }
- 
-
-
 }
 
 export const saveRecord= {
@@ -94,6 +86,65 @@ export const saveSign = {
 export const querySign = {
     queryOfSign : async(niSecEEta)=>{
         return await axiosInstance.get(`firmas?niSecEETA=${niSecEEta}`)
+        .then(res => res)
+        .catch(res =>{
+            return res.response
+        })
+    }
+}
+
+export const queryAutogestion = {
+    queryOfAutogestion : async(niSecEEta)=>{
+        return await axiosInstance.get(`autogestion?niSecEETa=${niSecEEta}`)
+        .then(res => res)
+        .catch(res =>{
+            return res.response
+        })
+    }
+}
+export const queryUser = {
+    queryUserIt: async(niSecExp)=>{
+        return await axiosInstance.get(`consulta_usuario?niSecExp=${niSecExp}`)
+        .then(res => res)
+        .catch(res =>{
+            return res.response
+        })
+    }
+}
+export const obligaIt = {
+    queryObligaIt: async({niSecEETA,niSecTer})=>{
+        return await axiosInstance.get(`consulta_obligacionesIt?niSecEETA=${niSecEETA}&niSecTer=${niSecTer}`)
+        .then(res => res)
+        .catch(res =>{
+            return res.response
+        })
+    }
+    
+}
+
+export const saveObligaIt = {
+    saveItObliga: async({niSecEEta,nioLinea,niSecDoc,niSecTer,viObligacion,viPeriodica,niPlazo,viCumple,viObs,viMotivoParcial,viIdUsuario})=>{
+        return await axiosInstance.post(`guardar_ObligacionIt?niSecEEta=${niSecEEta}&niSecTer=${niSecTer}&nioLinea=${nioLinea}&niSecDoc=${niSecDoc}&viObligacion=${viObligacion}&viPeriodica=${viPeriodica}&niPlazo=${niPlazo}&viCumple=${viCumple}&viObs=${viObs}&viMotivoParcial=${viMotivoParcial}&viIdUsuario=${viIdUsuario}`)
+        .then(res => res)
+        .catch(res =>{
+            return res.response
+        })
+    }
+}
+
+export const seeActs = {
+    ActsExp: async(niSecExp)=>{
+        return await axiosInstance.get(`actos_expediente?niSecExp=${niSecExp}`)
+        .then(res => res)
+        .catch(res =>{
+            return res.response
+        })
+    }
+}
+
+export const queryCoordinates = {
+    coordinatesProcedure: async({niSecEETA, viUsuario})=>{
+        return await axiosInstance.get(`consulta_coordenadas?niSecEETA=${niSecEETA}&viUsuario=${viUsuario}`)
         .then(res => res)
         .catch(res =>{
             return res.response

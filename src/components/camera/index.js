@@ -48,12 +48,14 @@ export function Camera({ onCapture, onClear }) {
   }
 
   function handleCanPlay() {
+ 
     calculateRatio(videoRef.current.videoHeight, videoRef.current.videoWidth);
     setIsVideoPlaying(true);
     videoRef.current.play();
   }
 
-  function handleCapture() {
+  function handleCapture(e) {
+    e.preventDefault();
     const context = canvasRef.current.getContext("2d");
 
     context.drawImage(
@@ -73,7 +75,8 @@ export function Camera({ onCapture, onClear }) {
     setIsFlashing(true);
   }
 
-  function handleClear() {
+  function handleClear(e) {
+    e.preventDefault();
     const context = canvasRef.current.getContext("2d");
     context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     setIsCanvasEmpty(true);
@@ -125,7 +128,7 @@ export function Camera({ onCapture, onClear }) {
 
           {isVideoPlaying && (
             <Button onClick={isCanvasEmpty ? handleCapture : handleClear}>
-              {isCanvasEmpty ? "Take a picture" : "Take another picture"}
+              {isCanvasEmpty ? "Capturar" : "Capturar otra foto"}
             </Button>
           )}
         </Wrapper>

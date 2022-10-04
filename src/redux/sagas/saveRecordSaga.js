@@ -1,6 +1,6 @@
-import {call, fork, put, takeEvery, all} from 'redux-saga/effects'
-import { identifierSaveRecordActions } from 'redux/reducers/saveRecordSlice'
-import { successSave } from 'redux/reducers/saveRecordSlice'
+import {call, fork, put, takeEvery, all} from 'redux-saga/effects';
+import { identifierSaveRecordActions } from 'redux/reducers/saveRecordSlice';
+import { successSave } from 'redux/reducers/saveRecordSlice';
 import { failureRecord } from 'redux/reducers/saveRecordSlice'
 import { saveRecord } from 'services/authServices'
 

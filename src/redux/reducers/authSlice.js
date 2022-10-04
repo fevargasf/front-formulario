@@ -29,7 +29,7 @@ const authSlice = createSlice({
             state.viip = null
             state.usuario = null
             state.isLogged = false;
-            state.voerror = action.payload.voerror;
+          /*   state.voerror = action.payload.voerror; */
         
         },
         logout: (state) => {

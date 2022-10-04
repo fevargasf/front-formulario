@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Camera } from "../camera";
-import { dataAutogestion } from "redux/reducers/autogestionSlice";
+import { dataUserQuery } from "redux/reducers/userQuerySlice";
 import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
 
-function MapExample() {
+function MapReportOb({ ibIts }) {
   const [query, setQuery] = useState("");
-  const data = useSelector(dataAutogestion);
+  const data = useSelector(dataUserQuery);
   const videoRef = useRef(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [cardImage, setCardImage] = useState();
@@ -20,6 +20,17 @@ function MapExample() {
       coorY: "",
     },
   ]);
+
+  const [visible, setVisible] = useState(false);
+  const [checked, setChecked] = useState(false);
+   useEffect(() => {
+    
+    let temporizador;
+
+    if (visible) {
+        console.log("Entro al effect");
+    } 
+  }, [visible]); 
 
   const handleFormChange = (index, event) => {
     event.preventDefault();
@@ -51,6 +62,8 @@ function MapExample() {
     getVideo();
   }, [videoRef]);
 
+  
+
   const getVideo = () => {
     navigator.mediaDevices
       .getUserMedia({ video: { width: 300 } })
@@ -67,62 +80,88 @@ function MapExample() {
   async function handleSubmit(e) {
     e.preventDefault();
   }
+  function toggle(value){
+    setChecked(false)
+  }
+
   return (
     <>
       <div className="overflow-x-auto relative mx-4">
         <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <form
             className=" max-w-lg m-auto py-0 mt-0 px-10 "
-            onSubmit={handleSubmit}
-          >
-            {addFormDataMovil.map((input, index) => {
-              return (
+            onSubmit={handleSubmit}>
                 <>
-                  {data
-                    .filter((obli) => {
-                      const obligs = obli.radicado_resolucion;
-                      if (query === "") {
-                        console.log(query);
-                        return obligs;
-                      } else if (obligs.includes(query)) {
-                        //returns filtered array
-                        return obligs;
-                      }
-                    })
-                    .map((obligs, index) => (
-                      <>
-                      <div key={index}>
-                      <div className=" border  ">
-                          <label className="text-gray-600 font-medium ml-4 mb-2 mx-4">
+                 <>
+                
+                      <div className=" uppercase text-lg text-gray-600 font-medium ml-4 mb-4 mx-4  ">
+                          <label className="">
                             Tipo de reporte:
                           </label>
-                         <h3>{obligs.radicado_resolucion}</h3>
+                        
+                         <h3 className="flex justify-items-center">{ibIts.doc_radicado}</h3>
                         </div>
-                        <div className="flex border py-2 ">
-                          <label className="text-gray-600 font-medium ml-4 mb-2 mx-4">
-                            Título Obligación / Aspecto:
-                          </label>
-                          <input
-                            type="text"
-                            className="w-full max-w-sm border-solid border-gray-300 border  text-black"
-                            name="obliga_obs"
-                            placeholder={obligs.obliga_obs}
-                          />
+                        <div className="uppercase text-lg mx-4 mb-2">
+                        <label class="form-check-label">Aspecto</label>
+                            &nbsp; &nbsp; 
+                            <input class="form-check-input" type="radio" 
+                             checked={checked}
+                             onChange={() => setChecked(true)}
+                              onClick={() => setVisible(true)}
+                             />
                         </div>
-                        <div className="flex  border py-2">
-                          <label className="text-gray-600 font-medium ml-4 mb-2 mx-4 py-2">
-                            Descripción:
-                          </label>
-                          <input
-                            className="w-full max-w-sm border-solid border-gray-300 border rounded text-black"
-                            name="descripcion"
-                            placeholder={obligs.obliga_descripcion}
-                          />
-                        </div>
-                      </div>
+                        <hr />
+                        <div className="mt-2">
+                          <label className="uppercase text-gray-600 font-medium ml-4 mb-2 mx-4">
+                            Título :
+                          </label>{" "}
+                        
+                         </div>
+                            <input
+                                type="text"
+                                className="w-full max-w-sm border-solid border-gray-300 border py-2 mt-4 text-black"
+                                name="obligacion"
+                                placeholder={ibIts.obligacion}
+                            />
+                           <div className="flex mt-4">
+                            <label className="uppercase text-gray-600 font-medium ml-4 mb-2 mx-4">
+                                Descripción:
+                            </label>{" "}
+                           </div>
+                            <input
+                                className="w-full max-w-sm border-solid border-gray-300 border mt-4 py-4 text-black"
+                                name="observaciones"
+                                placeholder={ibIts.observaciones}
+                            />
+                            {/* */}
+                            {visible  && checked && <>
+                               
+                                <div className="mt-2">
+                                <button className='btn' 
+                                onClick={toggle}>🅧</button>
+                                <label className="uppercase text-gray-600 font-medium ml-4 mb-2 mx-4">
+                                    Título Aspecto :
+                                </label>{" "}
+                                
+                                </div>
+                                    <input
+                                        type="text"
+                                        className="w-full max-w-sm border-solid border-gray-300 border py-2 mt-4 text-black"
+                                        name="obligacion"
+                                        
+                                    />
+                                <div className="flex mt-4">
+                                    <label className="uppercase text-gray-600 font-medium ml-4 mb-2 mx-4">
+                                        Descripción:
+                                    </label>{" "}
+                                </div>
+                                    <input
+                                        className="w-full max-w-sm border-solid border-gray-300 border mt-4 py-4 text-black"
+                                        name="observaciones" />
+                            </>}
+                      
                      
-                      </>
-                    ))}
+                    </>
                   <div className="flex border py-2 ml-4 mt-4">
                     <div className="absolute  h-56 grid grid-cols-2 gap-4 mx-4 content-center ">
                       <button
@@ -159,16 +198,6 @@ function MapExample() {
                       <video />
                     </div>
                   </div>
-
-                  {/*   <div className=" border py-2">
-                  <label className="text-gray-600 font-medium ml-4 mb-2 mx-4 py-2">
-                    Sistema de Referencia:
-                  </label>
-                  <select onChange={event => handleFormChange(index, event)}  className=" border-solid border-gray-300 border rounded text-black" name="" id="">
-                    <option value={input.sistema}>Origen único</option>
-                    <option value={input.sistema}>WGS84</option>
-                  </select>
-                </div> */}
                   <div className="overflow-x-auto relative">
                     <div className="flex w-full mb-2 border py-2">
                       <label className="text-gray-600 font-medium ml-4 mb-2 mx-4 py-2">
@@ -179,15 +208,15 @@ function MapExample() {
                           className=" ml-2 mr-4 mt-4 border-solid border-gray-300 border py-2 px-2 rounded text-black w-1/4"
                           name="coorX"
                           placeholder="Coordenada en X"
-                          onChange={(event) => handleFormChange(index, event)}
-                          value={input.coorX}
+                   
+                          
                         />
                         <input
                           className=" ml-2 mr-4 mt-4 border-solid border-gray-300 border py-2 px-2 rounded text-black w-1/4"
                           name="coorY"
                           placeholder="Coordenada en Y"
-                          onChange={(event) => handleFormChange(index, event)}
-                          value={input.coorY}
+                        
+                          
                         />
                       </div>
                       <button>
@@ -198,28 +227,12 @@ function MapExample() {
                   <button className="Upload__submit" type="submit">
                     Enviar
                   </button>
-                  {/*  <div className="flex justify-start">
-            <button onClick={(event) => {
-              event.preventDefault();
-              removeFields(index)}} className="inline-flex items-center px-4 py-3   bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-              Quitar
-            </button>
-            <button onClick={addFields} className=" px-4 py-2 mr-2 mt-1 bg-blue-500 hover:bg-blue-500 text-gray-800 text-sm font-medium rounded-lg">
-              <AddCircleRoundedIcon/>
-              Agregar
-            </button>
-            </div> */}
                 </>
-              );
-            })}
-          </form>
+          </form> 
         </div>
       </div>
     </>
   );
 }
 
-export default MapExample;
+export default MapReportOb;

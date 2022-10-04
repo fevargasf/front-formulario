@@ -12,9 +12,8 @@ function* getAllInformation({payload}){
 
         yield put(successInformation(data));
 
-
     }catch(e){
-        console.log(e)
+        
 
     }
 

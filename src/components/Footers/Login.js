@@ -10,18 +10,12 @@ import Loading from "components/Loading";
 export default function Login() {
   const [error, setError] = useState(null);
   const carga = useSelector((state) => state.auth.voerror)
- console.log(carga)
-  const getData = async () => {
-    const res = await axios.get('https://geolocation-db.com/json/')
-    const viip= res.data.IPv4;
-     console.log(viip)
-    sessionStorage.setItem('viip',viip);
-  } 
+
+
   const history =  useHistory();
   const dispatch = useDispatch()
 
   async function login(Usuario, Password,vinavegador,viip){
-
     const dataLogin = {
       Usuario,
       Password,
@@ -35,19 +29,23 @@ export default function Login() {
       })
     }
 
-  var recuIp= sessionStorage.getItem('viip');
-  const [user, setuser] = useState({ 
-    Usuario: '', 
-    Password: '',
-    vinavegador:'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-    viip:'190.69.38.94'});  
-
+      const[viip, setviip]=useState('')
+      console.log(viip)
+      var msie = window.navigator.userAgent.slice(0,41);
+      const [user, setuser] = useState({ 
+        Usuario: '', 
+        Password: '',
+        vinavegador:msie,
+        viip:viip
+      });  
+   
 
     async function handleSubmit (e)  {    
     e.preventDefault();    
  
    try{
-     await login(user.Usuario,user.Password, user.vinavegador, user.viip);
+   
+     await login(user.Usuario,user.Password, user.vinavegador, viip);
    }catch (error){
  
    }
@@ -55,26 +53,23 @@ export default function Login() {
    
   }; 
   useEffect( () => {
-    //passing getData method to the lifecycle method
+    const getData = async () => {
+      const res = await axios.get('https://geolocation-db.com/json/')
+      var viipRes= res.data.IPv4;
+      console.log(res.data)
+      setviip(viipRes)
+    } 
     getData()
-   
-    console.log(`UA: ${window.navigator.userAgent}`);
-    var msie = window.navigator.userAgent.indexOf("MSIE ");
-    console.log(msie)
-    //setIsIE(msie > 0)
-    setError(sessionStorage.getItem('error'))
-  }, [])
-  const onChange = (e) => {    
-    e.persist();    
-    setuser({...user, [e.target.name]: e.target.value});    
-   
-
-  }
+ 
+      }, [])
+      const onChange = (e) => {    
+        e.persist();    
+        setuser({...user, [e.target.name]: e.target.value});    
+      }
   
 
   return (
     <>
-   {error && <div className="error">{error}</div>}
       <div className="container mx-auto  px-4  ">
         <div className="flex content-center items-center justify-center ">
           <div className="top-50 mt-20 w-full lg:w-4/12 px-4">
@@ -95,7 +90,7 @@ export default function Login() {
                   value={user.vinavegador}/>
                 <input type="hidden" name="viip"  id="viip"
                     onChange={onChange}
-                    value={recuIp}
+                    value={viip}
                  />
                   <div className="relative w-full mb-3">
                     <label
