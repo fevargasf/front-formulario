@@ -15,14 +15,17 @@ import Obliga from "components/Maps/ObligacionesUsuario";
 import { dataQuerySign } from "redux/reducers/querySignSlice";
 import { identifierQueryAction } from "redux/reducers/querySignSlice";
 import ToolsDocumento from "components/Maps/ToolsDocumentos";
-import Normal from "components/Maps/Normal";
 import { identifierActionsUser } from "redux/reducers/userQuerySlice";
 import { identifierActionsActs } from "redux/reducers/actsExpSlice";
 import {actsData} from "redux/reducers/actsExpSlice";
 import { dataUserQuery } from "redux/reducers/userQuerySlice";
 import Conclusiones from "components/Maps/Conclusiones";
 import Recomendaciones from "components/Maps/Recomendaciones";
-
+import SearchForm from "./SearchForm";
+import Problematica from "components/Maps/Problematica";
+import cora from "../../assets/img/cora.png"; 
+import MapReportOb from "components/Maps/MapReportOb";
+import { ActionButton } from "./ActionButton";
 
 const useStyles = makeStyles((theme) => ({
   btns:{
@@ -57,7 +60,12 @@ export default function Maps({match, color,idEtapa }) {
   const obligaciones = useSelector(dataUserQuery)
   const [it,setIt] = useState(obligaciones);
   const [verIt, setVerIt] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [checked, setChecked] = useState(false);
 
+  function toggle(value){
+    setChecked(false)
+  }
   useEffect(() => {
     const dataInformacion = {
       niSecEEta: match.params.ID,
@@ -75,19 +83,19 @@ export default function Maps({match, color,idEtapa }) {
 
      },[]);
      
-     function fetchPoema() {
+     function fetchConsultaSinTer() {
       const dataIt= {
         niSecEETA: match.params.ID,
-        niSecTer:115147 /* cambiar back*/ 
+        niSecTer:"" /* cambiar back*/ 
       }
       dispatch({type: identifierActionsUser.FETCH_USER_IT,payload:dataIt});
       setVerIt(!verIt)
       };
-      
       useEffect(() => {
-        fetchPoema();
+        fetchConsultaSinTer();
 
-      }, []);
+      }, [match.params.ID]);
+
   return (
     <>
     <div className={classes.btns}>
@@ -97,113 +105,79 @@ export default function Maps({match, color,idEtapa }) {
             {" "}
             {"PDF"}{" "}
           </Button>
+         
         )}
-        content={() => componentToPrint.current}
+        content={() => componentToPrint.current }
       />
+     
     </div>
-    <div ref={(el) => (componentToPrint.current = el)}>
-    <div className="flex flex-wrap bg-lightBlue-900 text-white" >
-        <div className="w-full mt-12" >
-          <div className="relative mt-4 flex flex-col min-w-0 break-words bg-lightBlue-900 text-white w-full mb-6 shadow-lg rounded">
-          <div className="flex  mt-4 mb-4 bg-lightBlue-900 text-white">
-          <form className="container mt-0 mx-auto bg-[#50d71e]">
+    <div  ref={(el) => (componentToPrint.current = el)}>
+      <div className="flex flex-wrap relative py-1 sm:mx-auto sm:max-w-xl opacity-5  text-black" >
+        <div className="w-full border mt-12" >
+          <div className="relative mt-4 flex flex-col min-w-0 break-words text-black opacity-5 w-full mb-6 shadow-lg rounded">
+          <div className=" mt-4 mb-4  text-black">
+          <form className="container border mt-0 mx-auto bg-[#50d71e] opacity-5">
+          <button
+                className="bg-indigo-500 font-bold rounded-full py-2 px-4  flex mx-4 shadow-lg uppercase tracking-wider text-black focus:outline-none"
+                onClick={goPage}>
+                HOME
+            </button>
        {/*    <button
               type="button"
               onClick={handleThemeSwitch}
               className=" fixed mr-12 z-10 ml-4  bg-indigo-500 text-lg p-0 rounded-md">
               {theme === 'dark' ? '🌙' : '🌞'}
               </button> */}
-            <div className="text-center py-10  shadow-md mb-8">
-              <button
-                className="bg-indigo-500 font-bold rounded-full py-2 px-4  flex mx-4 shadow-lg uppercase tracking-wider text-white focus:outline-none"
-                onClick={goPage}>
-                HOME
-            </button>
-           
-              <h1  className="text-2xl font-bold">CONTROL Y SEGUIMIENTO TÉCNICO</h1>
+            <div className="  overflow-x-auto justify-center text-center text-black py-10   mb-8">
+         
+            <table className="border flex w-full">
+              <tbody>
+                  <tr><th></th><th className="border">SISTEMA DE GESTIÓN INTEGRAL - SGI</th></tr>
+                  <tr><td className="px-4 mr-2"><img style={{ width: "50%" ,height: "auto",marginLeft: "4rem", marginBottom:"1rem" }} src={cora}/>
+                  </td><td className="border">INFORME TÉCNICO CONTROL Y SEGUIMIENTO PERMISO, CONCESIONES,
+                                      <p> AUTORIZACIONES, LICENCIAS Y DEMÁS INSTRUMENTOS DE MANEJO </p>
+                                      <p align="center">AMBIENTAL</p>
+                                      <p className="flex mt-4" align="left"></p>
+                                      <hr />
+                                      <div className="flex  ">
+                                        <div className="w-1/2 p-2 text-center ">CÓDIGO: F-ARN-34</div>
+                                        <div className="w-1/2 p-2 text-center">VERSIÓN: 03</div>
+                                        <div className="w-1/2 p-2 text-center">PÁGINA</div>
+                                      </div>
+                                      </td>
+                  </tr>
+                   </tbody>
+          </table>
+            {/*     
+             <h1  className="text-2xl font-bold">CONTROL Y SEGUIMIENTO TÉCNICO</h1> */}
             </div>
 
             <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">1. Información General:</h1>
-            <div className={" mt-4 grid gap-y-6 grid-cols-2" +
-            (color === "light" ? "bg-white" : "bg-lightBlue-900 text-white")}>
-                  <div className="flex mt-4 gap-x-4">
-                    <div className="w-full md:w-1 px-3 mb-6 md:mb-0">
-                      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                        Asunto:
-                      </label>
-                      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                     
-                      disabled
-                      type="password" placeholder={data['nombre_asunto']}/>
-                     
-                    </div>
-                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                        Interesado:
-                      </label>
-                      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                     
-                      disabled
-                      type="password" placeholder={data['nombre_interesado']}/>
-                     
-                    </div>
-                  </div>
-                  <div className="flex mt-4 gap-x-4">
-                    <div className="w-full md:w-1 px-3 mb-6 md:mb-0">
-                      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                        Expediente:
-                      </label>
-                      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                     
-                      disabled
-                      type="password" placeholder={data['expediente']}/>
-                     
-                    </div>
-                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                        Expedientes Relacionados:
-                      </label>
-                      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                      
-                      disabled
-                      type="password"placeholder={data['expedientes_relacionados']}/>
-                     
-                    </div>
-                  </div>
+            <div className="mr-4 px-12">
+            <ol class="space-y-2  list-decimal list-inside text-black mb-4 dark:text-gray-400">
+                <li>
+                    <span class="font-semibold text-black text-xl mb-4 py-2 dark:text-white">Asunto :</span> {data['nombre_asunto']} 
+                </li>
+                <li>
+                    <span class="font-semibold text-black text-xl mb-4 py-2 dark:text-white">Interesado :</span>{data['nombre_interesado']} 
+                </li>
+                <li>
+                    <span class="font-semibold text-black text-xl mb-4 py-2 dark:text-white">Expediente :</span> {data['expediente']}
+                </li>
+                <li>
+                    <span class="font-semibold text-black text-xl mb-4 py-2 dark:text-white">Expedientes Relacionados :</span> {data['expedientes_relacionados']}
+                </li>
+                <li>
+                    <span class="font-semibold text-black text-xl mb-4 py-2 dark:text-white">Municipio :</span> {data['municipio']}
+                </li>
+                <li>
+                    <span class="font-semibold text-black text-xl mb-4 py-2 dark:text-white">Fecha de visita  :</span> {data['numero_visita']}
+                </li>
+                <li>
+                    <span class="font-semibold text-black text-xl mb-4 py-2 dark:text-white"> Acompañante  :</span> {data['acompagnantes_visita']}
+                </li>
+            </ol>
             </div>
-              <div className="flex mt-4 gap-x-4 bg-lightBlue-900 text-white">
-                <div className="w-full md:w-1 px-3 mb-6 md:mb-0 ">
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                    Municipio:
-                  </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                 
-                  disabled
-                  type="password" placeholder={data['municipio']}/>
-                 
-                </div>
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                    Fecha de visita :
-                  </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                   id="grid-fecha"
-                   disabled
-                   type="password" placeholder={data['numero_visita']}/>
-                </div>
-              </div>
-              
-              <div className="flex mt-4 gap-x-4 bg-lightBlue-900 text-white">
-                <div className="w-full md:w-1 px-3 mb-6 md:mb-0">
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                    Acompañante :
-                  </label>
-                  <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                   
-                   disabled
-                   type="password" placeholder={data['acompagnantes_visita']}/>
-                </div>     
-              </div>
               <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">2. ANTECEDENTES :</h1>
               <TablaAntecedentes idEtapa={match.params.ID}/>
               <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">3. COORDENADAS ASOCIADAS AL TRÁMITE AMBIENTAL :</h1>
@@ -221,24 +195,20 @@ export default function Maps({match, color,idEtapa }) {
               <Obliga  idEtapa={match.params.ID}/>
               <br />
               <br />
-             {/*  <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">5. SITUACIÓN ENCONTRADA :</h1>
-              <hr />
-              <MapExample /> */}
-              <br />
-              <br />
-              <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">6. ANÁLISIS DE INFORMACIÓN Y/O DOCUMENTACIÓN APORTADA :</h1>
-              <hr />
-              <br /><br />
-              <ToolsDocumento/>
-              <br /><br />
+              <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">5. SITUACIÓN ENCONTRADA :</h1>
               <hr />
               <br />
+              <MapReportOb />
               <br />
-              <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">7. IDENTIFICACIÓN DE AFECTACIÓN Y/O PROBLEMÁTICA AMBIENTAL :</h1>
+              <br />
+         <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">6. ANÁLISIS DE INFORMACIÓN Y/O DOCUMENTACIÓN APORTADA :</h1>
               <hr />
               <br />
+              <ToolsDocumento idEtapa={match.params.ID}/>
+              <br /><br /> 
+              <hr />
               <br />
-              <Normal/>
+              <Problematica/>
               <br />
               <br />
               <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">8. CONCLUSIONES :</h1>
@@ -255,15 +225,24 @@ export default function Maps({match, color,idEtapa }) {
               <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">9. RECOMENDACIONES :</h1>
               <hr />
               <br />
+              <h1>Se recomienda requerir al usuario para que de cumplimiento a las siguientes obligaciones :</h1>
+              <br />
               <h1>(Incorporar obligaciones no cumplidas o cumplidas parcialmente, para orientar al área jurídica y las que considere necesarias):</h1>
               <br />
               <Recomendaciones/>
               <br />
               <br />
+              <div>
+                <h1>
+                NOTA: El presente informe no constituye decisión de fondo, frente a la solicitud del permiso, autorización, concesión o licencia ambiental requerida; por lo tanto, la implementación de obras o actividades en él recomendadas, no podrá realizarse hasta tanto no se haya expedido el respectivo acto administrativo. 
+                </h1>
+              </div>
+              {/* <SearchForm/>  */}
               <Upload idEtapa={match.params.ID}/>
             {/*   <PruebasA /> */}
              
             </form>
+            <ActionButton/>
             </div>
           </div>
         </div>

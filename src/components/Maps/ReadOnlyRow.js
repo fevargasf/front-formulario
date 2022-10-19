@@ -85,10 +85,10 @@ const ReadOnlyRow = ({
         <td className="border   text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
           {contact?.obliga_obs}
         </td>
-        <td className="border   text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+        <td >
           {contact?.obliga_descripcion}
         </td>
-        <td className="border   text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+        <td >
           {contact?.comoTermina}
         </td>
         {/*   <td className="border   text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">

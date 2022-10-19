@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import Obliga from "components/Maps/ObligacionesUsuario";
 import Upload from "components/Maps/Firma";
 import ToolsDocumento from "components/Maps/ToolsDocumentos";
-import Normal from "components/Maps/Normal";
+import Problematica from "components/Maps/Problematica";
 import { dataAutogestion } from "redux/reducers/autogestionSlice";
 import { identifierAutogestionAction } from "redux/reducers/autogestionSlice";
 import Conclusiones from "components/Maps/Conclusiones";
@@ -169,7 +169,7 @@ export default function Evaluacion({match, color}) {
               <hr />
               <br />
                <h3>(Este punto solo aplica en los casos en que se presente un incumplimiento reiterado, frente a las obligaciones y condiciones del respectivo permiso ambiental, mediante acto administrativo) </h3>
-               <Normal/>
+               <Problematica/>
                <br />
               <br />
               <h1 className="font-bold text-2xl text-gray-900 border-b-2 border-gray-100 p-2 mb-2">8. CONCLUSIONES :</h1>

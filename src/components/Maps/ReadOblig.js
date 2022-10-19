@@ -1,11 +1,15 @@
-import React,{useState} from "react";
-import MapRepo from "./MapExample";
+import React,{useState, useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "components/Modal";
 import MapReportOb from "./MapReportOb";
 
+import { dataUserQuery } from "redux/reducers/userQuerySlice";
+import { identifierActionsUser } from "redux/reducers/userQuerySlice";
 
-const ReadOblig = ({ ibIts,handleEditClick }) => {
+const ReadOblig = ({ ibIts,handleEditClick,handleDeleteClick}) => {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+
   /*  eventos modal*/
   const handleClose = (e) => {
     e.preventDefault();
@@ -16,8 +20,11 @@ const ReadOblig = ({ ibIts,handleEditClick }) => {
      setShowModal(true);
     
   };
+
+
   return (
     <>
+
     <tr className="border  " >
     <td className="border   px-4 py-1 w-1/4 whitespace-nowrap text-base  font-medium text-white">{ibIts?.doc_radicado}</td>
       <td  className="border   px-6 py-4 whitespace-nowrap text-base  font-medium text-white">{ibIts?.obligacion}</td>
@@ -25,10 +32,6 @@ const ReadOblig = ({ ibIts,handleEditClick }) => {
        <td className="border    text-white text-base font-light px-6 py-4 whitespace-nowrap">{ibIts?.cumplio}</td>
        <td className="border    text-white text-base font-light px-6 py-4 whitespace-nowrap">{ibIts?.plazo_meses}</td>
       <td className="border    text-white text-base font-light px-6 py-4 whitespace-nowrap">{ibIts?.periodica}</td>
-    {/*   <td className="border   text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-      <a className=" cursor: pointer;" onClick={download}>Descargar</a>
-      </td> */}
-     
      <td>
         <div className="flex justify-center">
         <button 
@@ -41,10 +44,10 @@ const ReadOblig = ({ ibIts,handleEditClick }) => {
                       </path>
                   </svg>
             </button>
-              <a /* onClick={(event) => {
+              <a  onClick={(event) => {
                   event.preventDefault();
-                  handleDeleteClick(contact.obliga_linea)
-                  }}  */
+                  handleDeleteClick(ibIts.linea)
+                  }}  
                   className="inline-flex items-center    bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-full ">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -60,7 +63,7 @@ const ReadOblig = ({ ibIts,handleEditClick }) => {
               )}
             </div>
           </td> 
-        </tr>
+    </tr>
   </>
   );
 };

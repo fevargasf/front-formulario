@@ -1,76 +1,93 @@
 import React, { useEffect, useRef } from "react";
-import ReactDOM from "react-dom";
-import {MapContainer, Map, TileLayer, withLeaflet, GeoJSON } from "react-leaflet";
-import Proj4 from "proj4leaflet";
+
+import {MapContainer,  LayersControl, Map, TileLayer, WMSTileLayer, GeoJSON, Marker } from "react-leaflet";
+import Proj from "proj4leaflet";
+
 import L from "leaflet";
 import 'leaflet/dist/leaflet.css';
-const MERCATOR_TILES_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
-const nationalParks= {
-    "type": "FeatureCollection",
-    "features": [{
-      "type": "Feature",
-      "id": 0,
-      "properties": {
-        "Code": "FRLA",
-        "Name": "Frederick Law Olmsted National Historic Site"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-71.131129569256473, 42.325508673715092]
-      }
-    }, {
-      "type": "Feature",
-      "id": 1,
-      "properties": {
-        "Code": "GLDE",
-        "Name": "Gloria Dei Church National Historic Site"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-75.143583605984745, 39.934377409572079]
-      }
-    }
-    ]
+
+L.Proj = Proj;
+const { Overlay } = LayersControl;
+const TILES = "https://tile.gbif.org/3116/omt/{z}/{x}/{y}@4x.png?style=osm-bright-en"
+const defaultMarker = new L.icon({
+  iconUrl: "https://unpkg.com/leaflet@1.4.0/dist/images/marker-icon.png",
+  iconSize: [25, 41],
+  iconAnchor: [13, 0]
+});
+
+
+
+const MapReporte = ({q}) => {
+
+  console.log(q,"search")
+
+  const Bbox_width = 18.99 - 5.93;
+  const startResolution = Bbox_width / 1024;
+  const resolutions = new Array(22);
+  for (var i = 0; i < 22; ++i) {
+    resolutions[i] = startResolution / Math.pow(2, i);
   }
-const MapReporte = () => {
-    const mapRef = useRef();
-
-    useEffect(() => {
-      const { current = {} } = mapRef;
-      const { leafletElement: map } = current;
-  
-      if ( !map ) return;
-  
-      const parksGeoJson = new L.GeoJSON(nationalParks, {
-        onEachFeature: (feature = {}, layer) => {
-          const { properties = {} } = feature;
-          const { Name } = properties;
-  
-          if ( !Name ) return;
-  
-          layer.bindPopup(`<p>${Name}</p>`);
-        }
-      });
-  
-      parksGeoJson.addTo(map);
-    }, [])
-  
+  var crs_3116 = new  L.Proj.CRS(
+    'EPSG:3116', 
+    '+proj=tmerc +lat_0=4.596200416666666 +lon_0=-74.07750791666666 +k=1 +x_0=1000000 +y_0=1000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+    {
+      origin: [0, 0],
+      bounds: L.bounds([5.93, 34.76], [18.99, 47.1]),
+      resolutions
+    }
+  );
+  //Proj.defs('EPSG:3116', '+proj=tmerc +lat_0=4.596200416666666 +lon_0=-74.07750791666666 +k=1 +x_0=1000000 +y_0=1000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+  var crs_6706 = new Proj.CRS(
+    "EPSG:3116",
+    "+proj=tmerc +lat_0=4.596200416666666 +lon_0=-74.07750791666666 +k=1 +x_0=1000000 +y_0=1000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+    {
+      origin: [0, 0],
+      bounds: L.bounds([5.93, 34.76], [18.99, 47.1]),
+      resolutions
+    }
+  );
+  const proj = crs_3116;
+  proj.unproject(new L.Point(789213,1172820));
+  const position = proj.unproject(new L.Point(789213,1172820));
+  console.log(position["lat"],"p")
     return (
-     <div className="mb-4 py-3">
-       <MapContainer ref={mapRef} center={[6.50, -75.35]} zoom={4}
-          style={{
-            height:"21rem",
-            top: "40rem",
-            width: "60%",
-            minWidth: "200px",
-          }}
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; <a href=&quot;https://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> contributors" />
-        </MapContainer>
-    </div>
-     
-       
-    );
+      <MapContainer
+      center={[6.1052462,-75.7794948]}
+      zoom={8}>
+      <Marker icon={defaultMarker}  position={position} >
+      
+    </Marker>
+    <LayersControl position="topright">
+        <Overlay name="Layer Catasto">
+          <WMSTileLayer
+            url="https://wms.cartografia.agenziaentrate.gov.it/inspire/wms/ows01.php"
+            layers={[
+              "province",
+              "CP.CadastralZoning",
+              "CP.CadastralParcel",
+              "fabbricati",
+              "strade",
+              "acque",
+              "vestizioni"
+            ]}
+            format="image/png"
+            attribution={
+              "© " +
+              '<a href="https://creativecommons.org/licenses/by-nc-nd/2.0/it/">Agenzia delle Entrate CC-BY-NC-ND 4.0</a>'
+            }
+            transparent
+            crs={crs_3116}
+          />
+        </Overlay>
+      </LayersControl>
+        
+         
+      <TileLayer
+        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+    </MapContainer>
+    )
   }
   export default MapReporte;

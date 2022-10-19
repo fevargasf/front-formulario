@@ -1,15 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { Camera } from "../camera";
 import { dataAutogestion } from "redux/reducers/autogestionSlice";
 import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
 
-function MapExample() {
+function MapExample({ row }) {
   const [query, setQuery] = useState("");
   const data = useSelector(dataAutogestion);
   const videoRef = useRef(null);
+  const file = useRef(null)
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [cardImage, setCardImage] = useState();
+  const [imagenUrl, setImagenUrl] = useState([]);
+  const [fileArray, setFileArray]= useState([]);
+  const [fileObj, setFileObj] = useState([]);
   const [addFormDataMovil, setAddFormDataMovil] = useState([
     {
       tipo: "Aspecto",
@@ -67,10 +71,26 @@ function MapExample() {
   async function handleSubmit(e) {
     e.preventDefault();
   }
+
+ function uploadMultipleFiles(e) {
+   fileObj.push(e.target.files)
+   console.log(e.target.files,"url")
+    for (let i = 0; i < fileObj[0].length; i++) {
+        fileArray.push(URL.createObjectURL(fileObj[0][i]))
+    }
+    setFileArray({ file: fileArray })
+}
+
+    function uploadFiles(e) {
+        e.preventDefault()
+        console.log(file)
+    }
+ 
   return (
     <>
       <div className="overflow-x-auto relative mx-4">
         <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <h1>5. SITUACIÓN ENCONTRADA :</h1>
           <form
             className=" max-w-lg m-auto py-0 mt-0 px-10 "
             onSubmit={handleSubmit}
@@ -195,6 +215,19 @@ function MapExample() {
                       </button>
                     </div>
                   </div>
+                  <div class="my-2">
+                    
+                      <input type="file" class="form-control" id="images" name="images[]" onChange={()=> uploadFiles } multiple/>
+                      <textarea name="" id="" cols="30" rows="10"></textarea>
+                  </div>
+                    <div>
+                      <input onclick="return resetForm();" type="reset" class="btn btn-danger" name='reset_images' value="Reset"/>
+                    </div>
+                    <hr />
+                     <div class="row" id="image_preview">
+                     
+                     </div>
+                   
                   <button className="Upload__submit" type="submit">
                     Enviar
                   </button>

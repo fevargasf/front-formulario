@@ -9,7 +9,9 @@ import { identifierObliActions } from "redux/reducers/saveObligSlice";
 
 const EditableRow = ({
   editFormData,
+  ibIts,
   addFields,
+  handleItUpload,
   handleEditFormChange,
   handleCancelClick,
 }) => {
@@ -141,7 +143,6 @@ const EditableRow = ({
           value={editFormData.viObligacion}
           onChange={handleEditFormChange}
         />
-    
       <td>
         <input
           type="text"
@@ -151,6 +152,7 @@ const EditableRow = ({
           value={editFormData.viObs}
           onChange={handleEditFormChange}
         />
+
       </td>
       <td>
     <input
@@ -185,7 +187,9 @@ const EditableRow = ({
       <td>
         <div className="flex justify-start">
           <button
-           onClick={addFields}
+           onClick={(e)=>{handleItUpload()
+                e.preventDefault()}
+               }
             className=" px-4 py-2 mr-2 mt-1 bg-blue-500 hover:bg-blue-500 text-gray-800 text-sm font-medium rounded-lg"
             type="submit"
           >

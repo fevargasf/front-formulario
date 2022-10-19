@@ -145,8 +145,7 @@ export default function CardTable({ color}) {
                           //returns filtered array
                           return item;
                         }
-                      }).map((item, index) => (
-                     
+              }).map((item, index) => (
                <tr key={index}>
                   <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                   {noColumn++}

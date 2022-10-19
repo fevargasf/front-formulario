@@ -88,9 +88,7 @@ export default function Upload({ history, mostrarError,idEtapa,color }) {
             <br /><br /><br />
         <div 
           className={
-            " relative flex flex-col min-w-0 break-words w-full py-4 px-3 mx-3 mb-4 mt-20 shadow-lg rounded " +
-            (color === "light" ? "bg-white" : "bg-lightBlue-900 text-white")
-          }>
+            " relative flex flex-col min-w-0 break-words w-full py-4 px-3 mx-3 mb-4 mt-20 shadow-lg rounded " }>
           <div className="rounded-t mb-0 px-6 py-0 border-0">
           </div>
           <div className="block w-full overflow-x-auto">
